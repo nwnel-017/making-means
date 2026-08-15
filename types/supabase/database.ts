@@ -68,9 +68,9 @@ export type Database = {
       }
       artworks: {
         Row: {
-          artist_id: string | null
+          artist_id: string
           artwork_note: string | null
-          collection_id: string
+          collection_id: string | null
           cover_image: boolean
           created_at: string
           description: string | null
@@ -84,9 +84,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          artist_id?: string | null
+          artist_id: string
           artwork_note?: string | null
-          collection_id?: string
+          collection_id?: string | null
           cover_image?: boolean
           created_at?: string
           description?: string | null
@@ -100,9 +100,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          artist_id?: string | null
+          artist_id?: string
           artwork_note?: string | null
-          collection_id?: string
+          collection_id?: string | null
           cover_image?: boolean
           created_at?: string
           description?: string | null

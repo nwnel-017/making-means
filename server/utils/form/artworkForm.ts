@@ -1,8 +1,8 @@
-import { ArtworkData } from "~~/types/artworks/artworks";
+import { NewArtworkData } from "~~/types/artworks/artworks";
 import { MultiPartData } from "h3";
 
-export const extractArtworkFormData = (form: MultiPartData[]) => {
-  const artworkForm: ArtworkData = {
+export const extractNewArtworkFormData = (form: MultiPartData[]) => {
+  const artworkForm: NewArtworkData = {
     title: form.find((field) => field.name === "title")?.data?.toString() || "",
     description:
       form.find((field) => field.name === "description")?.data?.toString() ||
@@ -10,14 +10,11 @@ export const extractArtworkFormData = (form: MultiPartData[]) => {
     price: form.find((field) => field.name === "price")?.data?.toString() || "",
     dimensions:
       form.find((field) => field.name === "dimensions")?.data?.toString() || "",
-    collection:
-      form.find((field) => field.name === "collection")?.data?.toString() || "",
+    artist: form.find((field) => field.name === "artist")?.data?.toString() || "",
     artwork_note:
       form.find((field) => field.name === "artwork_note")?.data?.toString() ||
       "",
-    cover_image:
-      form.find((field) => field.name === "cover_image")?.data?.toString() ===
-        "true" || false,
   };
+
   return artworkForm;
 };

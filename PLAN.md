@@ -2,7 +2,7 @@ The app can be wired to artists without changing orders or authentication. The m
 
 ## What will break or remain incorrect
 
-### 1. Generated database types do not include artists
+<!-- ### 1. Generated database types do not include artists
 
 [database.ts](/Users/natenelson/Projects/making-means/types/supabase/database.ts) still contains:
 
@@ -12,7 +12,7 @@ The app can be wired to artists without changing orders or authentication. The m
 
 It does not contain `artists` or `artworks.artist_id`.
 
-These types must be regenerated after applying the new migration.
+These types must be regenerated after applying the new migration. -->
 
 ### 2. Artwork creation still requires a collection
 

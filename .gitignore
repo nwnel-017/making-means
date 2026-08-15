@@ -23,5 +23,8 @@ logs
 .env.*
 !.env.example
 
+# Agents
+REVIEW.md
+
 # Cursor config
 .cursor

@@ -5,9 +5,9 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "#types/supabase/database";
 import { requireAdmin } from "@server/utils/auth/requireAdmin";
 import { UploadInput } from "~~/server/services/storage.service";
-import type { ArtworkData } from "#types/artworks/artworks";
+import type { NewArtworkData } from "#types/artworks/artworks";
 import { fi } from "zod/locales";
-import { extractArtworkFormData } from "~~/server/utils/form/artworkForm";
+import { extractNewArtworkFormData } from "~~/server/utils/form/artworkForm";
 import { validateImageFile } from "~~/utils/validation/image";
 
 export default defineEventHandler(async (event) => {
@@ -24,9 +24,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const artworkForm: ArtworkData = extractArtworkFormData(form);
-
-  console.log("collection id found in route: " + artworkForm.collection);
+  const artworkForm: NewArtworkData = extractNewArtworkFormData(form);
 
   const imageField = form.find((field) => field.name === "image");
 

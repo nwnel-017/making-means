@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ArtworkData } from "#types/artworks/artworks.ts";
+import type { NewArtworkData } from "#types/artworks/artworks.ts";
 import type { DropDown } from "#types/dropdown/dropdown";
 import { toast } from "vue-sonner";
 
@@ -14,42 +14,40 @@ useSeoMeta({
 });
 
 const { addArtwork } = useArtworks();
-const { getCollections } = useCollections();
+const { getArtists } = useArtists();
 
 const image = ref<File | null>(null);
 
-const artwork = reactive<ArtworkData>({
+const artwork = reactive<NewArtworkData>({
   title: "",
   description: "",
   price: "",
   dimensions: "",
-  collection: "",
+  artist: "",
   artwork_note: "",
-  cover_image: false,
 });
 
-const collectionName = ref<string>("");
+const artistName = ref<string>("");
 
 // To Do: research which is better - this way or using async data in artworks/id.vue
 const {
-  data: collections,
-  pending: loadingCollections,
-  error: collectionError,
-} = await getCollections();
+  data: artists,
+  pending: loadingArtists,
+  error: artistError,
+} = await getArtists();
 
-const collectionItems = computed<DropDown[]>(
+const artistItems = computed<DropDown[]>(
   () =>
-    collections.value?.map((c) => ({
-      label: c.collection_name ?? "",
-      value: c.id ?? "",
-    })) ?? [{ label: "", value: "" }],
+    artists.value?.map((artist) => ({
+      label: artist.name,
+      value: artist.id,
+    })) ?? [],
 );
 
-function selectCollection(collection: DropDown) {
-  if (!collection) return;
-  artwork.collection = collection.value;
-  collectionName.value = collection.label;
-  console.log("selected collection: " + artwork.collection);
+function selectArtist(artist: DropDown) {
+  if (!artist) return;
+  artwork.artist = artist.value;
+  artistName.value = artist.label;
 }
 
 const onFileChange = (event: Event) => {
@@ -66,9 +64,8 @@ const submit = async () => {
     image.value,
     artwork.dimensions,
     artwork.price,
-    artwork.collection,
+    artwork.artist,
     artwork.artwork_note || "",
-    artwork.cover_image || false,
   );
 
   if (!response.success) {
@@ -82,7 +79,8 @@ const submit = async () => {
   image.value = null;
   artwork.price = "";
   artwork.dimensions = "";
-  artwork.collection = "";
+  artwork.artist = "";
+  artistName.value = "";
   artwork.artwork_note = "";
 
   await navigateTo("/admin/artworks");
@@ -106,18 +104,21 @@ const submit = async () => {
       <label for="image">Artwork Image</label>
       <input @change="onFileChange" name="image" accept="image" type="file" />
       <div class="">
-        <DropDown
-          label="Collection"
-          :items="collectionItems ?? []"
-          @select="selectCollection"
-        />
-        <span>{{ collectionName }}</span>
+        <DropDown label="Artist" :items="artistItems" @select="selectArtist" />
+        <span>{{ artistName }}</span>
       </div>
-      <div>
-        <input type="checkbox" v-model="artwork.cover_image" id="cover_image" />
-        <label for="cover_image">Set as collection cover image</label>
-      </div>
-      <button variant="primary" type="submit" size="sm">Submit</button>
+      <p v-if="!loadingArtists && !artistError && artists?.length === 0">
+        Add an artist before adding artwork.
+      </p>
+      <p v-if="artistError">Artists could not be loaded.</p>
+      <button
+        variant="primary"
+        type="submit"
+        size="sm"
+        :disabled="loadingArtists || !!artistError || !artists?.length"
+      >
+        Submit
+      </button>
     </form>
   </div>
 </template>

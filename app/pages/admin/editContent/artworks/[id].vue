@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { ArtworkData } from "#types/artworks/artworks";
+import type { DropDown } from "#types/dropdown/dropdown";
 import { toast } from "vue-sonner";
 
 definePageMeta({
@@ -9,12 +10,33 @@ definePageMeta({
 
 const { startLoading, stopLoading } = useLoading();
 const { getArtwork, updateArtwork, removeArtwork } = useArtworks();
+const { getArtists } = useArtists();
 
 const route = useRoute();
 
 const artworkId = computed(() => route.params.id as string);
 
 const { data: artwork, pending, error } = await getArtwork(artworkId.value);
+const {
+  data: artists,
+  pending: artistsPending,
+  error: artistsError,
+} = await getArtists();
+
+const artistItems = computed<DropDown[]>(
+  () =>
+    artists.value?.map((artist) => ({
+      label: artist.name,
+      value: artist.id,
+    })) ?? [],
+);
+
+const artistName = ref("");
+
+function selectArtist(artist: DropDown) {
+  editedArtwork.value.artist = artist.value;
+  artistName.value = artist.label;
+}
 
 useSeoMeta({
   title: () => artwork.value?.title || "Edit Artwork",
@@ -26,9 +48,8 @@ const editedArtwork = ref<ArtworkData>({
   description: "",
   dimensions: "",
   price: "",
-  collection: artwork.value?.collection_id || "",
+  artist: artwork.value?.artist_id || "",
   artwork_note: "",
-  cover_image: false,
 });
 
 const image = ref<File | null>(null);
@@ -42,10 +63,12 @@ function startEdit() {
     description: artwork.value?.description || "",
     dimensions: artwork.value?.dimensions || "",
     price: artwork.value?.price?.toString() || "",
-    collection: artwork.value?.collection_id || "",
+    artist: artwork.value?.artist_id || "",
     artwork_note: artwork.value?.artwork_note || "",
-    cover_image: artwork.value?.cover_image || false,
   };
+  artistName.value =
+    artists.value?.find((artist) => artist.id === artwork.value?.artist_id)
+      ?.name || "";
   image.value = null;
 }
 
@@ -56,10 +79,10 @@ function stopEdit() {
     description: "",
     dimensions: "",
     price: "",
-    collection: artwork.value?.collection_id || "",
+    artist: artwork.value?.artist_id || "",
     artwork_note: "",
-    cover_image: false,
   };
+  artistName.value = "";
   image.value = null;
 }
 
@@ -71,10 +94,9 @@ async function save() {
   const newDesc = editedArtwork.value.description;
   const newPrice = editedArtwork.value.price;
   const newDimensions = editedArtwork.value.dimensions;
-  const newCollection = editedArtwork.value.collection;
+  const newArtist = editedArtwork.value.artist;
   const newNote = editedArtwork.value.artwork_note || "";
-  const newCoverImageValue = editedArtwork.value.cover_image;
-  if (!newTitle || !newDesc || !newPrice || !newDimensions || !newCollection) {
+  if (!newTitle || !newDesc || !newPrice || !newDimensions || !newArtist) {
     toast.error("Please change at least one field to update the artwork");
     return;
   }
@@ -84,9 +106,8 @@ async function save() {
     newDesc === artwork.value?.description &&
     newPrice === artwork.value?.price?.toString() &&
     newDimensions === artwork.value?.dimensions &&
-    newCollection === artwork.value?.collection_id &&
-    newNote === artwork.value?.artwork_note &&
-    newCoverImageValue === artwork.value?.cover_image
+    newArtist === artwork.value?.artist_id &&
+    newNote === artwork.value?.artwork_note
   ) {
     toast.error("No changes have been made!");
     return;
@@ -97,9 +118,8 @@ async function save() {
   form.append("title", newTitle);
   form.append("description", newDesc);
   form.append("dimensions", newDimensions);
-  form.append("collection", newCollection);
+  form.append("artist", newArtist);
   form.append("artwork_note", newNote);
-  form.append("cover_image", newCoverImageValue?.toString() || "false");
   form.append("price", newPrice);
 
   try {
@@ -188,13 +208,18 @@ async function deleteArtwork() {
           <textarea v-model="editedArtwork.dimensions" type="text"></textarea>
           <label for="artwork_note">Artwork Note (Optional):</label>
           <textarea v-model="editedArtwork.artwork_note" type="text"></textarea>
-          <label for="cover_image">Cover Image</label>
-          <input
-            type="checkbox"
-            id="cover_image"
-            v-model="editedArtwork.cover_image"
+          <DropDown
+            label="Artist"
+            :items="artistItems"
+            @select="selectArtist"
           />
-          <Button variant="primary" size="lg" @click="save"
+          <span>{{ artistName }}</span>
+          <p v-if="artistsError">Artists could not be loaded.</p>
+          <Button
+            variant="primary"
+            size="lg"
+            :disabled="artistsPending || !!artistsError || !artists?.length"
+            @click="save"
             >Save Changes</Button
           >
           <Button variant="secondary" size="lg" @click="stopEdit"

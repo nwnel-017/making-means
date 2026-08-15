@@ -2,9 +2,7 @@ import { requireAdmin } from "@server/utils/auth/requireAdmin";
 import { updateArtwork } from "@server/services/artworks.service";
 import { serverSupabaseClient } from "#supabase/server";
 import { validateNewArtworkForm } from "@utils/validation/form";
-import type { ArtworkData } from "#types/artworks/artworks";
-import type { UploadInput } from "#types/files/files";
-import { extractArtworkFormData } from "~~/server/utils/form/artworkForm";
+import { extractNewArtworkFormData } from "~~/server/utils/form/artworkForm";
 
 export default defineEventHandler(async (event) => {
   console.log("updating artwork!");
@@ -32,23 +30,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const artworkForm: ArtworkData = {
-    title: form.find((field) => field.name === "title")?.data?.toString() || "",
-    description:
-      form.find((field) => field.name === "description")?.data?.toString() ||
-      "",
-    dimensions:
-      form.find((field) => field.name === "dimensions")?.data?.toString() || "",
-    price: form.find((field) => field.name === "price")?.data?.toString() || "",
-    collection:
-      form.find((field) => field.name === "collection")?.data?.toString() || "",
-    artwork_note:
-      form.find((field) => field.name === "artwork_note")?.data?.toString() ||
-      "",
-    cover_image:
-      form.find((field) => field.name === "cover_image")?.data?.toString() ===
-        "true" || false,
-  };
+  const artworkForm = extractNewArtworkFormData(form);
 
   const validatedForm = await validateNewArtworkForm(artworkForm);
   if (!validatedForm.success) {

@@ -27,9 +27,8 @@ export function useArtworks() {
     image: File | null,
     dimensions: string,
     price: string,
-    collection: string,
+    artist: string,
     artwork_note: string,
-    cover_image: boolean,
   ) => {
     // Validation
     if (
@@ -38,7 +37,7 @@ export function useArtworks() {
       !image ||
       !price ||
       !dimensions ||
-      !collection
+      !artist
     ) {
       return {
         success: false,
@@ -53,8 +52,7 @@ export function useArtworks() {
     formData.append("price", price);
     formData.append("dimensions", dimensions);
     formData.append("image", image);
-    formData.append("collection", collection);
-    formData.append("cover_image", cover_image.toString());
+    formData.append("artist", artist);
 
     if (artwork_note) {
       formData.append("artwork_note", artwork_note);

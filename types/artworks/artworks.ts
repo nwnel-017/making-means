@@ -3,10 +3,11 @@ export type ArtworkData = {
   description: string;
   price: string;
   dimensions: string;
-  collection: string;
+  artist: string;
   artwork_note?: string;
-  cover_image?: boolean;
 };
+
+export type NewArtworkData = ArtworkData;
 
 export type Artwork = {
   id: string;

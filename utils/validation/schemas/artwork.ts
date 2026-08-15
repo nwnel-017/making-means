@@ -18,11 +18,7 @@ export const artworkFormSchema = z
       .min(1, { message: "Dimensions are required" })
       .max(50, { message: "Dimesniosn are too long" }),
     artwork_note: z.string().optional(),
-    collection: z
-      .string()
-      .min(1, { message: "Collection is required" })
-      .max(50, { message: "Collection is too long" }),
-    cover_image: z.boolean().optional(),
+    artist: z.uuid({ message: "Artist is required" }),
   })
   .strict()
   .strip();

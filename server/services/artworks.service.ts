@@ -1,6 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "#types/supabase/database";
-import type { ArtworkData } from "#types/artworks/artworks";
+import type { ArtworkData, NewArtworkData } from "#types/artworks/artworks";
 import type { UploadInput } from "./storage.service";
 import { uploadFile, deleteFile } from "./storage.service";
 
@@ -9,7 +9,7 @@ import { uploadFile, deleteFile } from "./storage.service";
 // dont pass in a form - pass in fields directly
 async function addArtwork(
   supabase: SupabaseClient<Database>,
-  artwork: ArtworkData,
+  artwork: NewArtworkData,
   image: UploadInput,
 ) {
   console.log("Adding new artwork"); // reached here - but throwing error
@@ -19,7 +19,7 @@ async function addArtwork(
     !artwork.description ||
     !artwork.price ||
     !artwork.dimensions ||
-    !artwork.collection ||
+    !artwork.artist ||
     !image
   ) {
     console.log("Missing artwork fields!");
@@ -32,8 +32,6 @@ async function addArtwork(
       },
     });
   }
-
-  console.log("collection id in service: " + artwork.collection);
 
   try {
     // To Do: insert artwork image into gallery_photos with order 1
@@ -50,10 +48,9 @@ async function addArtwork(
         description: artwork.description,
         price: parsedPrice,
         dimensions: artwork.dimensions,
-        collection_id: artwork.collection,
+        artist_id: artwork.artist,
         artwork_note: artwork.artwork_note || "",
         image_path: imageUrl,
-        cover_image: artwork.cover_image || false,
       })
       .select("id");
 
@@ -105,7 +102,8 @@ async function updateArtwork(
     !artwork.title ||
     !artwork.description ||
     !artwork.price ||
-    !artwork.dimensions
+    !artwork.dimensions ||
+    !artwork.artist
   ) {
     throw new Error("Missing artwork fields!");
   }
@@ -125,8 +123,8 @@ async function updateArtwork(
         description: artwork.description,
         price: parsedPrice,
         dimensions: artwork.dimensions,
+        artist_id: artwork.artist,
         artwork_note: artwork.artwork_note || "",
-        cover_image: artwork.cover_image || false,
       })
       .eq("id", id);
   } catch (err) {

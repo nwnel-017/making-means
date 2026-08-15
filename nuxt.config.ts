@@ -53,7 +53,7 @@ export default defineNuxtConfig({
 
     public: {
       supabaseUrl: process.env.SUPABASE_URL,
-      admin: process.env.ADMIN_EMAIL,
+      adminEmail: process.env.NUXT_PUBLIC_ADMIN_EMAIL,
       stripeDomesticShippingId: process.env.STRIPE_SHIPPING_ID_DOMESTIC,
       stripeInternationalShippingId:
         process.env.STRIPE_SHIPPING_ID_INTERNATIONAL,

@@ -15,7 +15,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const user = useSupabaseUser();
 
-  if (user.value === null) {
+  if (
+    user.value === null ||
+    user.value.email !== config.public.adminEmail ||
+    user.value.app_metadata?.role !== "admin"
+  ) {
     return navigateTo("/admin/login");
   }
 

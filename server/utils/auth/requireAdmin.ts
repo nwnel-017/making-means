@@ -16,9 +16,11 @@ export async function requireAdmin(event: H3Event) {
     });
   }
 
-  // To Do: check admin email
-  const config = useRuntimeConfig();
-  if (user.email !== config.public.admin) {
+  const config = useRuntimeConfig(event);
+  if (
+    user.email !== config.public.adminEmail ||
+    user.app_metadata?.role !== "admin"
+  ) {
     throw createError({
       statusCode: 403,
       statusMessage: "Forbidden",

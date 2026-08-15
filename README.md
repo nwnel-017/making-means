@@ -1,8 +1,6 @@
-# Jamie Nelson Art
+# Making Means
 
-Live site: https://jamie-nelson-art.com
-
-Jamie Nelson Art is a custom online portfolio and storefront I built for a professional artist to display and sell original artwork online. The project combines a curated gallery experience with a stripe payout so visitors can browse collections, view artwork details, and purchase available pieces directly through the site. It includes an internal dashboard with admin-only auth for the artist to edit their artworks, galleries, and manage orders.
+Making Means is a custom online portfolio and storefront I built for Zimbabwean artists to display and sell original artwork online. The project combines a curated gallery experience with a stripe payout so visitors can browse collections, view artwork details, and purchase available pieces directly through the site. It includes an internal dashboard with admin-only auth for the artist to edit their artworks, galleries, and manage orders.
 
 ### Payments Notice
 

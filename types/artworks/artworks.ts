@@ -18,3 +18,15 @@ export type Artwork = {
   price: number;
   created_at: string;
 };
+
+export type ExhibitionArtwork = {
+  id: string;
+  title: string | null;
+  image_path: string | null;
+  price: number | null;
+  dimensions: string | null;
+  artist: {
+    id: string;
+    name: string;
+  };
+};

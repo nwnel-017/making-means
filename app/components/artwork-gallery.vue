@@ -2,29 +2,31 @@
 import type { Database } from "#types/supabase/database";
 import type { CollectionDetails } from "~~/types/collections/collection";
 type ArtworkRow = Database["public"]["Tables"]["artworks"]["Row"]; // look for cleaner way later
+type ArtworkCard = Pick<
+  ArtworkRow,
+  "id" | "title" | "image_path" | "price"
+> & {
+  artist?: { id: string; name: string };
+};
 
 const props = defineProps<{
-  artworks: ArtworkRow[];
+  artworks: ArtworkCard[];
   collection?: CollectionDetails;
+  title?: string;
+  description?: string;
+  showArtist?: boolean;
+  showPrice?: boolean;
 }>();
 
-const displayArtworkPopup = ref(false);
-const selectedArtwork = ref<ArtworkRow | null>(null);
-const imagesLoaded = ref(0);
+const loadedImages = ref(new Set<string>());
+const failedImages = ref(new Set<string>());
 
-const allImagesLoaded = computed(() => {
-  return (
-    props.artworks.length > 0 && props.artworks.length === imagesLoaded.value
-  );
-});
-
-function loadImage() {
-  imagesLoaded.value++;
+function loadImage(id: string) {
+  loadedImages.value = new Set(loadedImages.value).add(id);
 }
 
-function closePopup() {
-  selectedArtwork.value = null;
-  displayArtworkPopup.value = false;
+function failImage(id: string) {
+  failedImages.value = new Set(failedImages.value).add(id);
 }
 
 async function viewArtwork(id: string) {
@@ -35,10 +37,10 @@ async function viewArtwork(id: string) {
 
 <template>
   <div class="textBlock">
-    <h1>{{ props.collection?.collection_name || "All Artworks" }}</h1>
+    <h1>{{ props.title || props.collection?.collection_name || "All Artworks" }}</h1>
   </div>
-  <div v-if="props.collection" class="colDescription">
-    <p>{{ props.collection.desc }}</p>
+  <div v-if="props.description || props.collection" class="colDescription">
+    <p>{{ props.description || props.collection?.desc }}</p>
   </div>
   <div class="artworksGrid">
     <div
@@ -49,27 +51,40 @@ async function viewArtwork(id: string) {
     >
       <div class="imageWrapper">
         <NuxtImg
+          v-if="artwork.image_path && !failedImages.has(artwork.id)"
           :src="artwork?.image_path ?? undefined"
-          alt=""
+          :alt="artwork.title || 'Artwork'"
           class="artwork"
           format="webp"
           quality="70"
           width="80"
           height="80"
           sizes="80px"
-          @load="loadImage"
-          :class="{ visible: allImagesLoaded }"
+          :class="{ visible: loadedImages.has(artwork.id) }"
+          @load="loadImage(artwork.id)"
+          @error="failImage(artwork.id)"
         />
         <Lottie
-          v-if="!allImagesLoaded"
+          v-if="
+            artwork.image_path &&
+            !loadedImages.has(artwork.id) &&
+            !failedImages.has(artwork.id)
+          "
           name="img-placeholder"
           class="artwork visible imgOverlay"
         />
+        <div v-if="!artwork.image_path || failedImages.has(artwork.id)" class="imageFallback">
+          Image unavailable
+        </div>
       </div>
       <div class="artDetails">
         <div class="artTitle">{{ artwork?.title }}</div>
-        <!-- <div v-if="!artwork?.sold" class="center">${{ artwork?.price }}</div>
-        <div v-else class="center">Sold</div> -->
+        <div v-if="props.showArtist" class="artAttribution">
+          {{ artwork.artist?.name }}
+        </div>
+        <div v-if="props.showPrice && artwork.price !== null" class="center">
+          ${{ artwork.price }}
+        </div>
       </div>
     </div>
   </div>
@@ -135,6 +150,12 @@ async function viewArtwork(id: string) {
   display: block;
 }
 
+.artAttribution {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .cutoffTxtSm {
   white-space: nowrap;
   overflow: hidden;
@@ -162,6 +183,18 @@ async function viewArtwork(id: string) {
   inset: 0;
   z-index: 10;
   background: var(--theme-off-white);
+}
+
+.imageFallback {
+  display: grid;
+  width: 5rem;
+  height: 5rem;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--theme-white);
+  color: var(--theme-grey);
+  font-size: 0.65rem;
+  text-align: center;
 }
 
 .artwork {

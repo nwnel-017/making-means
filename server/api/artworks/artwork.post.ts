@@ -6,7 +6,6 @@ import { Database } from "#types/supabase/database";
 import { requireAdmin } from "@server/utils/auth/requireAdmin";
 import { UploadInput } from "~~/server/services/storage.service";
 import type { NewArtworkData } from "#types/artworks/artworks";
-import { fi } from "zod/locales";
 import { extractNewArtworkFormData } from "~~/server/utils/form/artworkForm";
 import { validateImageFile } from "~~/utils/validation/image";
 

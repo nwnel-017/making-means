@@ -14,7 +14,7 @@ It does not contain `artists` or `artworks.artist_id`.
 
 These types must be regenerated after applying the new migration. -->
 
-### 2. Artwork creation still requires a collection
+<!-- ### 2. Artwork creation still requires a collection -->
 
 The artwork creation flow currently:
 
@@ -37,13 +37,13 @@ This affects:
 
 They must use `artist`/`artist_id` instead.
 
-### 3. Artwork editing still depends on collections
+<!-- ### 3. Artwork editing still depends on collections -->
 
 The edit form reads `collection_id`, requires it during validation, and sends `collection`. It also still displays the collection-cover checkbox.
 
 It currently does not provide a dropdown for changing the relationship. When converted, the edit form should fetch artists and allow the admin to select or change the artwork’s artist.
 
-### 4. There is no artist management workflow
+<!-- ### 4. There is no artist management workflow -->
 
 The existing collection management needs artist equivalents:
 

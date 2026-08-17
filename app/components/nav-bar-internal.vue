@@ -46,10 +46,10 @@ const logout = async () => {
         >Artworks</NuxtLink
       >
       <NuxtLink
-        to="/admin/collections/collections"
+        to="/admin/artists/artists"
         class="dashLink"
         @click="toggleNav"
-        >Collections</NuxtLink
+        >Artists</NuxtLink
       >
       <NuxtLink to="/admin/coverImages" class="dashLink" @click="toggleNav"
         >Cover Images</NuxtLink

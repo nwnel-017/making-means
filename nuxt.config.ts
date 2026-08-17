@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     },
   },
   css: ["~/assets/styles/main.css"],
-  modules: ["@nuxtjs/supabase", "nuxt-lottie", "@nuxt/image", "nuxt-svgo"],
+  modules: ["@nuxtjs/supabase", "nuxt-lottie", "@nuxt/image", "nuxt-svgo", "@nuxt/eslint"],
   image: {
     domains: process.env.SUPABASE_DOMAIN
       ? [process.env.SUPABASE_DOMAIN]

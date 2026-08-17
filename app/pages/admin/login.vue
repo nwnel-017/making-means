@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref } from "vue";
+import { toast } from "vue-sonner";
 
 definePageMeta({
   layout: false,
@@ -44,10 +45,9 @@ const login = async () => {
 
     if (error) {
       console.log(error.message);
+      toast.error(error.message);
       return;
     }
-
-    stopLoading();
 
     email.value = "";
     password.value = "";
@@ -62,6 +62,9 @@ const login = async () => {
     // }
   } catch (err) {
     console.error("Unexpected login error:", err);
+    toast.error("Unable to log in. Please try again.");
+  } finally {
+    stopLoading();
   }
   // const { error } = await supabase.auth.signInWithPassword({
   //   email: email.value,

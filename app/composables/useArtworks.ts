@@ -1,4 +1,5 @@
 import type { ArtworkRow } from "~~/types/supabase/tables";
+import type { ExhibitionArtwork } from "~~/types/artworks/artworks";
 // import { useLoadingStore } from "~/stores/loading";
 
 const { startLoading, stopLoading } = useLoading();
@@ -12,6 +13,10 @@ export function useArtworks() {
     return useFetch<ArtworkRow>(`/api/artworks/${id}`, {
       lazy: true,
     });
+  };
+
+  const getExhibitionArtworks = async () => {
+    return useFetch<ExhibitionArtwork[]>("/api/artworks/exhibition");
   };
 
   const updateArtwork = async (id: string, form: FormData) => {
@@ -123,6 +128,7 @@ export function useArtworks() {
   return {
     getArtworks,
     getArtwork,
+    getExhibitionArtworks,
     updateArtwork,
     addArtwork,
     removeArtwork,

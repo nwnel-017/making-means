@@ -150,10 +150,14 @@ async function payWithStripe() {
         <div v-if="artwork?.artwork_note">
           <!-- <strong>*</strong> {{ artwork?.artwork_note }} -->
         </div>
-        <!-- <Button v-if="!artwork.sold" class="buttonCol" @click="confirmPayment"
-          >Buy Now</Button
+        <Button
+          v-if="!artwork.sold"
+          class="buttonCol"
+          @click="confirmPayment"
         >
-        <Button v-else disabled class="buttonCol">Sold</Button> -->
+          Buy Now
+        </Button>
+        <Button v-else disabled class="buttonCol">Sold</Button>
       </div>
     </div>
   </div>

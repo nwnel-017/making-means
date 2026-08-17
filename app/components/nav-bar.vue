@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import { iso } from "zod";
 
 const isOpen = ref(false);
 
@@ -17,21 +16,21 @@ const closeNav = () => {
 <template>
   <div>
     <div class="navBar">
-      <div class="navHeader">JAMIE NELSON ART</div>
+      <div class="navHeader">MAKING MEANS</div>
       <div class="linkItems" :class="{ expanded: isOpen }">
         <div class="verticalSpaced">
           <NuxtLink to="/" class="dashLink" @click="closeNav">HOME</NuxtLink>
           <NuxtLink
-            to="/collections/collections"
+            to="/exhibition-sales"
             @click="closeNav"
             class="dashLink"
-            >ORIGINAL ARTWORKS</NuxtLink
+            >EXHIBITION &amp; SALES</NuxtLink
           >
-          <NuxtLink to="/artworks/gallery" class="dashLink" @click="closeNav"
-            >GALLERY</NuxtLink
+          <NuxtLink to="/artists" class="dashLink" @click="closeNav"
+            >ARTISTS</NuxtLink
           >
           <NuxtLink to="/about" class="dashLink" @click="closeNav"
-            >ABOUT THE ARTIST</NuxtLink
+            >ABOUT</NuxtLink
           >
           <!-- <NuxtLink to="/commissions" class="dashLink" @click="closeNav"
             >COMMISSIONS</NuxtLink

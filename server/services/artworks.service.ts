@@ -344,6 +344,37 @@ async function getArtworks(supabase: SupabaseClient<Database>) {
   return artworks;
 }
 
+async function getExhibitionArtworks(supabase: SupabaseClient<Database>) {
+  const { data: artworks, error } = await supabase
+    .from("artworks")
+    .select(
+      "id, title, image_path, price, dimensions, artist:artists!artworks_artist_id_fkey(id, name)",
+    )
+    .eq("sold", false)
+    .order("created_at", { ascending: false });
+
+  if (error || !artworks) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Internal Error",
+      data: {
+        message: "Failed to fetch exhibition artworks",
+        details: error?.message,
+      },
+    });
+  }
+
+  return artworks.map((artwork) => {
+    const imagePath = artwork.image_path;
+    const publicUrl = imagePath
+      ? supabase.storage.from("artwork_images").getPublicUrl(imagePath).data
+          .publicUrl
+      : null;
+
+    return { ...artwork, image_path: publicUrl };
+  });
+}
+
 async function getCollectionArtworks(
   supabase: SupabaseClient<Database>,
   collectionId: string,
@@ -852,6 +883,7 @@ export {
   getArtworkCount,
   getSoldArtworkCount,
   getArtworks,
+  getExhibitionArtworks,
   markArtworkAsSold,
   getArtworkPrice,
   getLatestArtwork,

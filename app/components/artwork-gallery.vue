@@ -151,8 +151,10 @@ async function viewArtwork(id: string) {
 }
 
 .artAttribution {
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
   white-space: nowrap;
 }
 

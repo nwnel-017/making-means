@@ -4,6 +4,10 @@ import type { ArtworkRow } from "~~/types/supabase/tables";
 import type { GalleryRow } from "~~/types/supabase/tables";
 import VueEasyLightbox from "vue-easy-lightbox";
 
+type ArtworkDetails = ArtworkRow & {
+  artist: { id: string; name: string } | null;
+};
+
 const route = useRoute();
 const id = computed(() => route.params.id as string);
 
@@ -14,7 +18,7 @@ const {
   data: artwork,
   pending: pendingArtwork,
   error,
-} = await useFetch<ArtworkRow>(`/api/artworks/${id.value}`);
+} = await useFetch<ArtworkDetails>(`/api/artworks/${id.value}`);
 
 useSeoMeta({
   title: () => artwork.value?.title || "Artwork",
@@ -145,6 +149,7 @@ async function payWithStripe() {
       <div class="clmGap paddedSides">
         <h1>{{ artwork?.title }}</h1>
         <!-- <div>${{ artwork?.price }}</div> -->
+        <div v-if="artwork.artist"><strong>Artist:</strong> {{ artwork.artist.name }}</div>
         <div>{{ artwork?.dimensions }}</div>
         <div><strong>About:</strong> {{ artwork?.description }}</div>
         <div v-if="artwork?.artwork_note">

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref } from "vue";
+import appLogo from "~/assets/icons/applogo-transparent.png";
 
 const isOpen = ref(false);
 
@@ -16,7 +17,9 @@ const closeNav = () => {
 <template>
   <div>
     <div class="navBar">
-      <div class="navHeader">MAKING MEANS</div>
+      <div class="navHeader">
+        <img :src="appLogo" alt="Making Means" class="navLogo" />
+      </div>
       <div class="linkItems" :class="{ expanded: isOpen }">
         <div class="verticalSpaced">
           <NuxtLink to="/" class="dashLink" @click="closeNav">HOME</NuxtLink>
@@ -37,6 +40,9 @@ const closeNav = () => {
           > -->
           <NuxtLink to="/contact" class="dashLink" @click="closeNav"
             >CONTACT</NuxtLink
+          >
+          <NuxtLink to="/stories" class="dashLink" @click="closeNav"
+            >STORIES</NuxtLink
           >
         </div>
       </div>
@@ -61,8 +67,16 @@ const closeNav = () => {
 }
 
 .navHeader {
-  font-weight: bold;
-  font-size: 1.5rem;
+  width: 11rem;
+  height: 3.5rem;
+  overflow: hidden;
+}
+
+.navLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .navBar {

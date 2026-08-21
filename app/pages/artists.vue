@@ -99,5 +99,15 @@ function portraitFailed(id: string) {
     grid-template-columns: minmax(15rem, 2fr) minmax(20rem, 3fr);
     align-items: center;
   }
+
+  .artistProfile:nth-child(even) .portraitWrapper {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .artistProfile:nth-child(even) .artistCopy {
+    grid-column: 1;
+    grid-row: 1;
+  }
 }
 </style>

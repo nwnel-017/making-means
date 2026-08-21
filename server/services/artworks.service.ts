@@ -226,7 +226,9 @@ async function getArtworkDetails(
 
   const { data, error } = await supabase
     .from("artworks")
-    .select("*")
+    .select(
+      "*, artist:artists!artworks_artist_id_fkey(id, name)",
+    )
     .eq("id", id)
     .single();
 

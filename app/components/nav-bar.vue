@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import appLogo from "~/assets/icons/applogo-transparent.png";
+import appLogo from "~/assets/icons/favicon.jpg";
 
 const isOpen = ref(false);
 

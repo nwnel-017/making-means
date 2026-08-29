@@ -4,7 +4,6 @@
   <div class="verticalContent fillPage">
     <div class="page spaceBetween">
       <div>
-        <NavBar />
         <div class="centerContent">
           <slot />
         </div>

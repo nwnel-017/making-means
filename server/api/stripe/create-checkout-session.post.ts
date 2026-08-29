@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
   const stripe = new Stripe(config.stripeSecretKey);
   const currency = "usd";
   const domesticShippingFee = config.public.stripeDomesticShippingId;
-  const internationalShippingFee = config.public.stripeInternationalShippingId;
 
   const body = await readBody(event);
   const artworkId = body?.artworkId;
@@ -41,10 +40,7 @@ export default defineEventHandler(async (event) => {
       shipping_address_collection: {
         allowed_countries: ["US", "CA"], // or any countries you support
       },
-      shipping_options: [
-        { shipping_rate: domesticShippingFee },
-        { shipping_rate: internationalShippingFee },
-      ],
+      shipping_options: [{ shipping_rate: domesticShippingFee }],
       metadata: {
         artworkId: artworkId,
         price: amount,

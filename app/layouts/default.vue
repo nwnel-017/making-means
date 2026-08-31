@@ -8,7 +8,7 @@
           <slot />
         </div>
       </div>
-      <Footer />
+      <EntryContactStrip />
     </div>
   </div>
 </template>

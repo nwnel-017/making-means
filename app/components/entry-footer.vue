@@ -4,7 +4,7 @@ import appLogo from "~/assets/icons/applogo-transparent.png";
 const links = [
   { label: "HOME", to: "/" },
   { label: "EXHIBITION & SALE", to: "/exhibition-sales" },
-  { label: "ARTISTS", to: "/artists" },
+  { label: "ARTISTS", to: "/artists/all" },
   { label: "THE OASIS", to: "/collections/collections" },
   { label: "IMPACT", to: "/about" },
   { label: "CONVERSATIONS", to: "/stories" },

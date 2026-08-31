@@ -1,51 +1,241 @@
 <script lang="ts" setup>
 definePageMeta({ layout: "default" });
 
+useHead({
+  bodyAttrs: {
+    class: "conversations-route",
+  },
+  link: [
+    { rel: "preconnect", href: "https://fonts.googleapis.com" },
+    { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
+    {
+      rel: "stylesheet",
+      href: "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap",
+    },
+  ],
+});
+
 useSeoMeta({
-  title: "Stories",
-  description: "Watch stories from Making Means.",
-  ogTitle: "Stories | Making Means",
-  ogDescription: "Watch stories from Making Means.",
+  title: "Conversations",
+  description:
+    "Conversations connecting participating artists, Zimbabweans abroad, and members of The Oasis Bulawayo.",
+  ogTitle: "Conversations | Making Means",
+  ogDescription:
+    "Conversations connecting participating artists, Zimbabweans abroad, and members of The Oasis Bulawayo.",
 });
 </script>
 
 <template>
-  <main class="verticalContent fillPage storiesPage">
-    <div class="textBlock">
-      <h1>Stories</h1>
-    </div>
+  <main class="conversations-page">
+    <div class="page-divider" aria-hidden="true" />
 
-    <div class="videoFrame">
-      <iframe
-        src="https://www.youtube-nocookie.com/embed/z8wrqe72YG4"
-        title="Making Means story video"
-        loading="lazy"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-      ></iframe>
-    </div>
+    <header class="conversations-banner">
+      <h1>Conversations</h1>
+    </header>
+
+    <section class="conversations-content">
+      <p class="conversations-introduction">
+        <strong>Making Means</strong> is not only about moving artwork and
+        resources between Zimbabweans abroad and communities at home. It is
+        also about creating space for conversation, connection, and exchange.
+      </p>
+
+      <div class="conversation-feature">
+        <p class="conversation-description">
+          In this conversation, participating artists and members of The Oasis
+          Bulawayo reflect on creativity, home, diaspora, and the relationship
+          between Zimbabweans living abroad and the creative community in
+          Bulawayo.
+        </p>
+
+        <div class="video-frame">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/z8wrqe72YG4"
+            title="Making Means conversation video"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          />
+        </div>
+      </div>
+    </section>
   </main>
 </template>
 
 <style scoped>
-.storiesPage {
-  padding: 0 1rem 3rem;
+:global(body.conversations-route) {
+  --mm-gold: #d8c35a;
+  --mm-green: #102117;
+  --mm-black: #101a15;
+  --mm-white: #fafaf7;
 }
 
-.videoFrame {
+:global(body.conversations-route .page) {
+  min-height: calc(100dvh - 7rem);
+  padding: 0;
+}
+
+.conversations-page {
+  display: flex;
+  width: 100%;
+  min-height: calc(100dvh - 15rem);
+  flex-direction: column;
+  background: var(--mm-green);
+  color: var(--mm-white);
+  font-family: Lato, Arial, sans-serif;
+}
+
+.page-divider {
+  flex: 0 0 clamp(1.1rem, 2dvh, 2rem);
+  background: var(--mm-green);
+}
+
+.conversations-banner {
+  display: grid;
+  flex: 0 0 auto;
+  min-height: clamp(6rem, 13dvh, 9rem);
+  padding: 0.75rem 1.25rem;
+  place-items: center;
+  background: var(--mm-gold);
+  color: var(--mm-green);
+  text-align: center;
+}
+
+.conversations-banner h1 {
+  margin: 0;
+  font-family: Lato, Arial, sans-serif;
+  font-size: clamp(2.4rem, 5vw, 5rem);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.conversations-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  width: min(100%, 104rem);
+  margin: 0 auto;
+  padding: clamp(1.4rem, 3dvh, 2.5rem) clamp(2rem, 6vw, 7rem)
+    clamp(1.5rem, 3dvh, 2.5rem);
+}
+
+.conversations-introduction {
+  max-width: 78rem;
+  margin: 0 auto;
+  font-size: clamp(1.15rem, 1.75vw, 1.75rem);
+  line-height: 1.28;
+  text-align: center;
+}
+
+.conversations-introduction strong {
+  color: var(--mm-gold);
+  font-weight: 400;
+}
+
+.conversation-feature {
+  display: grid;
+  grid-template-columns: minmax(20rem, 0.9fr) minmax(28rem, 1.1fr);
+  align-items: center;
+  gap: clamp(3rem, 8vw, 9rem);
+  margin-top: clamp(1.75rem, 4dvh, 3.5rem);
+}
+
+.conversation-description {
+  max-width: 39rem;
+  margin: 0;
+  font-size: clamp(1.15rem, 1.65vw, 1.65rem);
+  line-height: 1.28;
+}
+
+.video-frame {
   position: relative;
-  width: min(56rem, 100%);
+  width: min(100%, 38rem);
   aspect-ratio: 16 / 9;
+  justify-self: center;
   overflow: hidden;
-  background: black;
+  border-radius: clamp(2rem, 4vw, 4rem);
+  background: #000;
 }
 
-.videoFrame iframe {
+.video-frame iframe {
   position: absolute;
   width: 100%;
   height: 100%;
   border: 0;
   inset: 0;
+}
+
+@media (max-width: 1100px) {
+  :global(body.conversations-route .page) {
+    min-height: calc(100dvh - 5.5rem);
+  }
+
+  .conversations-page {
+    min-height: calc(100dvh - 13.5rem);
+  }
+
+  .conversations-content {
+    padding-right: clamp(1.5rem, 4vw, 3rem);
+    padding-left: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .conversation-feature {
+    grid-template-columns: minmax(17rem, 0.85fr) minmax(22rem, 1.15fr);
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+}
+
+@media (max-width: 800px) {
+  .conversations-page {
+    min-height: 0;
+  }
+
+  .page-divider {
+    flex-basis: 1rem;
+  }
+
+  .conversations-banner {
+    min-height: 6rem;
+  }
+
+  .conversations-banner h1 {
+    letter-spacing: 0.12em;
+  }
+
+  .conversations-content {
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .conversation-feature {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 2.5rem;
+  }
+
+  .conversation-description,
+  .video-frame {
+    width: min(100%, 38rem);
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .conversations-banner h1 {
+    font-size: clamp(1.85rem, 10vw, 2.4rem);
+    letter-spacing: 0.08em;
+  }
+
+  .conversations-introduction,
+  .conversation-description {
+    font-size: 1.05rem;
+  }
+
+  .video-frame {
+    border-radius: 1.75rem;
+  }
 }
 </style>

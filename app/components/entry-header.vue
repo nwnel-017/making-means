@@ -6,9 +6,9 @@ const isOpen = ref(false);
 const links = [
   { label: "HOME", to: "/" },
   { label: "EXHIBITION & SALE", to: "/exhibition-sales" },
-  { label: "ARTISTS", to: "/artists" },
+  { label: "ARTISTS", to: "/artists/all" },
   { label: "THE OASIS", to: "/collections/collections" },
-  { label: "IMPACT", to: "/about" },
+  { label: "IMPACT", to: "/impact" },
   { label: "CONVERSATIONS", to: "/stories" },
   { label: "ABOUT", to: "/about" },
   { label: "CONTACT", to: "/contact" },
